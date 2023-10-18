@@ -40,8 +40,8 @@ devtools::install_github("kstagaman/autoNumCaptions")
 root.dir = "https://github.com/TrevorKap/MUSA5000/raw/main/HW1/Data"
 #Test1_shp <- st_read("https://github.com/TrevorKap/MUSA5000/raw/main/HW1/Data/RegressionData.shp")
 Reg_db <- st_read(file.path(root.dir,"RegressionData.dbf"))
-Reg_shp <- st_read(file.path(root.dir,"RegressionData.shp"))
-#https://github.com/TrevorKap/MUSA5000/raw/main/HW1/Data/RegressionData.shp
+Reg_shp <- st_read("C:/Users/Owner/Documents/GitHub/MUSA5000/HW1/Data/RegressionData.shp")
+# Line 43 is local only idfk how to fix this. 
 ```
 
 This is a change to make sure I am pushing correctly to the repository.
