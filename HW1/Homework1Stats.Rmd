@@ -39,9 +39,9 @@ devtools::install_github("kstagaman/autoNumCaptions")
 # load custom functions from the book 
 root.dir = "https://github.com/TrevorKap/MUSA5000/raw/main/HW1/Data"
 #Test1_shp <- st_read("https://github.com/TrevorKap/MUSA5000/raw/main/HW1/Data/RegressionData.shp")
-Reg_db <- st_read("https://github.com/TrevorKap/MUSA5000/raw/main/HW1/Data/RegressionData.dbf")
-Reg_shp <- st_read("https://github.com/TrevorKap/MUSA5000/raw/main/HW1/Data/RegressionData.shp")
-
+Reg_db <- st_read(file.path(root.dir,"RegressionData.dbf"))
+Reg_shp <- st_read(file.path(root.dir,"RegressionData.shp"))
+#https://github.com/TrevorKap/MUSA5000/raw/main/HW1/Data/RegressionData.shp
 ```
 
 This is a change to make sure I am pushing correctly to the repository.
