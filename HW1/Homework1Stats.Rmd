@@ -19,7 +19,7 @@ rm(list=ls())
 ```
 
 ```{r setup, include=FALSE}
-RegD = read.csv("RegressionData.csv")
+RegD = read.csv("https://github.com/TrevorKap/MUSA5000/raw/main/HW1/Data/RegressionData.csv")
 # we don't want scientific notation
 options(scipen=999)
 
