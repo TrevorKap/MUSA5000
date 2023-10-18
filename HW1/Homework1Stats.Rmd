@@ -37,10 +37,10 @@ library(stargazer)
 library(autoNumCaptions)
 devtools::install_github("kstagaman/autoNumCaptions")
 # load custom functions from the book 
-root.dir = "https://github.com/TrevorKap/Classes/raw/main/stats/"
-#Test1_shp <- st_read("https://raw.githubusercontent.com/TrevorKap/Classes/main/stats/RegressionData.shp")
-Reg_db <- st_read("https://github.com/TrevorKap/Classes/raw/main/stats/RegressionData.dbf")
-Reg_shp <- st_read("C:/Users/Owner/Documents/RStudio/MUSAStatistics/Lecture1RegressionData/RegressionData.shp")
+root.dir = "https://github.com/TrevorKap/MUSA5000/raw/main/HW1/Data"
+#Test1_shp <- st_read("https://github.com/TrevorKap/MUSA5000/raw/main/HW1/Data/RegressionData.shp")
+Reg_db <- st_read("https://github.com/TrevorKap/MUSA5000/raw/main/HW1/Data/RegressionData.dbf")
+Reg_shp <- st_read("https://github.com/TrevorKap/MUSA5000/raw/main/HW1/Data/RegressionData.shp")
 
 ```
 
