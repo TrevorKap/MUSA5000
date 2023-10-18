@@ -1,0 +1,5 @@
+"0",""
+"0","# For demo. requires updated mapview package"
+"0","# xx <- mapview::mapview(crime_net, zcol = ""countNarco"")"
+"0","# yy <- mapview::mapview(mutate(burglaries, ID = seq(1:n())))"
+"0","# xx + yy"
