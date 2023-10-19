@@ -607,22 +607,6 @@ joined_data <- st_join(joined_data, narc_risk_sf2, join = st_intersects) %>%
 
 ```{r}
 
-st_join(tracts17, reg.ss.spatialCV) %>%
- # filter(!is.na(countNarco)) %>%
-  group_by(raceContext) %>%
-  summarize(mean.MAE = mean(countNarco.AbsError)) %>%
-  st_drop_geometry() %>%
-  spread(, mean.MAE) %>%
-  kable(caption = "Mean Error By Neighborhood") %>%
-    kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>%
-    row_spec(2, color = "black", background = "#FFFFFF") %>%
-    row_spec(4, color = "black", background = "#FFFFFF")
-
-```
-
-
-```{r}
-
 
 joined_data %>%
   st_centroid() %>%
@@ -633,6 +617,20 @@ joined_data %>%
   spread(Risk_Category, mean.MAE) %>%
   kable(caption = "Mean Error by neighborhood racial context") %>%
   kable_styling("striped", full_width = F)
+
+
+joined_data %>%
+  st_centroid() %>%
+  na.omit() %>%
+  st_drop_geometry() %>%
+  group_by(raceContext, Risk_Category) %>%
+  summarize(mean.MAE = mean(countNarco.AbsError)) %>%
+  spread(Risk_Category, mean.MAE) %>%
+  mutate(across(everything(), function(x) ifelse(is.numeric(x), round(x, 2), x))) %>%
+  kable(caption = "Mean Error by neighborhood racial context") %>%
+  kable_styling("striped", full_width = F)
+
+
 
 ```
 names(joined_data)
