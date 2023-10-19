@@ -85,7 +85,6 @@ ggplot() +
   labs(title= "Narcotic Arrests, Chicago 2017") +
   mapTheme(title_size = 14))
 
-
 ```
 
 
@@ -131,7 +130,6 @@ ggplot() +
   labs(title = "Count of Nacro Arrests for the fishnet") +
   mapTheme()
 
-
 ```
 
 
@@ -168,6 +166,14 @@ neighborhoods <-
   st_read("https://raw.githubusercontent.com/blackmad/neighborhoods/master/chicago.geojson") %>%
   st_transform(st_crs(fishnet)) 
 
+abandoned_buildings <- 
+  read.socrata("https://data.cityofchicago.org/Service-Requests/311-Service-Requests-Vacant-and-Abandoned-Building/7nii-7srd") %>%
+  mutate(year = substr(date_service_request_was_received,1,4)) %>%  filter(year == "2017") %>%
+  dplyr::select(Y = latitude, X = longitude) %>%
+  na.omit() %>%
+  st_as_sf(coords = c("X", "Y"), crs = 4326, agr = "constant") %>%
+  st_transform(st_crs(fishnet)) %>%
+  mutate(Legend = "Abandoned_Buildings")
 ```
 
 
