@@ -62,7 +62,7 @@ chicagoBoundary <-
 ```
 # Introduction 
 
-We are interested in seeing Narcotic Arrests across Chicago in 2017. Narcotic arrests does not necessarily translate to drug-related crimes or occurrences such as possession or distribution, as narcotics are under reported and suffer additional selection bias in terms of racial and geographic profiling. Because the term "narcotics" has such a broad definition ranging from heroin to cannabis, we are going to look at cannabis possession exclusively. Our model will make predictions on future cannabis arrests based on previous arrests and independent variables. The variables in questions are murals, parks, and abandon buildings.      
+We are interested in seeing Narcotic Arrests across Chicago in 2017. Narcotic arrests does not necessarily translate to drug-related crimes or occurrences such as possession or distribution, as narcotics are under reported and suffer additional selection bias in terms of racial and geographic profiling. Because the term "narcotics" has such a broad definition ranging from heroin to cannabis, we are going to look at cannabis possession exclusively. Our model will make predictions on future cannabis arrests based on previous arrests and independent variables. The variables in questions are murals, parks, and abandon buildings.
 
 
 # Outcome of Interest Points 
