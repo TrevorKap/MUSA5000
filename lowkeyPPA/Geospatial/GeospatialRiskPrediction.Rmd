@@ -168,6 +168,7 @@ parks <-
   st_transform(st_crs(fishnet)) 
 parks <- parks %>%
   group_by(park) %>%
+  rename(Legend = park) %>%
   summarise()
 
 ## Neighborhoods to use in LOOCV in a bit
@@ -201,10 +202,10 @@ tracts18 <-
 ```{r}
 
 vars_net <- 
-  rbind(registeredMurals,parks,abandoned_buildings) %>%
-  st_join(fishnet, join=st_within) %>%
+  rbind(registeredMurals, abandoned_buildings) %>%
+  st_intersects(fishnet, join=st_within) %>%
   st_drop_geometry() %>%
-  group_by(uniqueID, Legend) %>%
+  group_by(Legend) %>%
   summarize(count = n()) %>%
   left_join(fishnet, ., by = "uniqueID") %>%
   spread(Legend, count, fill=0) %>%
@@ -470,7 +471,15 @@ reg.ss.spatialCV_nogeom
 
 
 # A table of raw errors by race context for a random k-fold vs. spatial cross validation regression.
-> welp idfk
+
+```{r}
+
+  ggplot() + geom_sf(data = tracts18, aes(fill = raceContext)) +
+    scale_fill_manual(values = c("purple", "yellow"), name="Race Context") +
+    labs(title = "Race Context") +
+    mapTheme() + theme(legend.position="bottom")
+
+```
 
 # The map comparing kernel density to risk predictions for the next year’s crime.
 
@@ -588,14 +597,7 @@ rbind(narc_KDE_sf, narc_risk_sf) %>%
       theme(axis.text.x = element_text(angle = 45, vjust = 0.5))
 ```
 
-```{r}
 
-  ggplot() + geom_sf(data = tracts18, aes(fill = raceContext)) +
-    scale_fill_manual(values = c("purple", "yellow"), name="Race Context") +
-    labs(title = "Race Context") +
-    mapTheme() + theme(legend.position="bottom")
-
-```
 # Two Paragraphs of Why or why not recommend the algorithm. 
 
 
