@@ -164,7 +164,7 @@ registeredMurals <- registeredMurals %>%
 
 
 parks <- 
-  st_read("https://raw.githubusercontent.com/blackmad/neighborhoods/master/chicago.geojson") %>%
+  st_read("https://github.com/TrevorKap/MUSA5000/raw/main/lowkeyPPA/Geospatial/Parks%20-%20Chicago%20Park%20District%20Facilities%20(current).geojson") %>%
   st_transform(st_crs(fishnet)) 
 
 ## Neighborhoods to use in LOOCV in a bit
