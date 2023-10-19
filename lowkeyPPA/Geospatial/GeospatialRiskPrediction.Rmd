@@ -594,22 +594,33 @@ rbind(narc_KDE_sf, narc_risk_sf) %>%
 ```{r}
 
 joined_data <- st_join(reg.ss.spatialCV, tracts17, join = st_intersects)
-geom
+narc_risk_sf2 <- narc_risk_sf %>%
+  dplyr::select("Risk_Category")
+  
+  
+
+joined_data <- st_join(joined_data, narc_risk_sf2, join = st_intersects) %>% 
+  dplyr::filter(countNarco.AbsError > 0.01)
+
 ```
-> Map isnt needed but figure out the kable table
 
 ```{r}
 
-st_join(tracts17, reg.ss.spatialCV) %>%
- # filter(!is.na(countNarco)) %>%
+joined_data %>%
+  st_centroid() %>%
+  na.omit() %>%
   group_by(raceContext) %>%
+ # filter(!is.na(Risk_Category)) %>%
   summarize(mean.MAE = mean(countNarco.AbsError)) %>%
   st_drop_geometry() %>%
-  spread(, mean.MAE) %>%
-  kable(caption = "Mean Error By Neighborhood") %>%
-    kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>%
-    row_spec(2, color = "black", background = "#FFFFFF") %>%
-    row_spec(4, color = "black", background = "#FFFFFF")
+  spread(raceContext, mean.MAE) %>%
+  kable(caption = "Mean Error by Risk Category") %>%
+  kbl() %>%
+  kable_classic()
+
+
+
+
 
 ```
 
