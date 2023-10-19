@@ -186,7 +186,8 @@ abandoned_buildings <-
 
 ```{r}
 
-vars_net <- registeredMurals %>%
+vars_net <- 
+  rbind(registeredMurals,parks,abandoned_buildings) %>%
   st_join(fishnet, join=st_within) %>%
   st_drop_geometry() %>%
   group_by(uniqueID, Legend) %>%
@@ -204,7 +205,7 @@ vars_net <- registeredMurals %>%
 > Review: what is NN and what does `k` represent in this function?
 
 ```{r}
-# convinience to reduce length of function names.
+# convenience to reduce length of function names.
 st_c    <- st_coordinates
 st_coid <- st_centroid
 
@@ -438,9 +439,6 @@ reg.ss.spatialCV <-
 # Gray represents infinitely off 
 
 ```
-
-
-
 
 # A table of MAE and standard deviation MAE by regression.
 
