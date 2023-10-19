@@ -602,29 +602,27 @@ narc_risk_sf2 <- narc_risk_sf %>%
 joined_data <- st_join(joined_data, narc_risk_sf2, join = st_intersects) %>% 
   dplyr::filter(countNarco.AbsError > 0.01)
 
+
+
+
 ```
 
+
 ```{r}
+
 
 joined_data %>%
   st_centroid() %>%
   na.omit() %>%
-  group_by(raceContext) %>%
- # filter(!is.na(Risk_Category)) %>%
-  summarize(mean.MAE = mean(countNarco.AbsError)) %>%
   st_drop_geometry() %>%
-  spread(raceContext, mean.MAE) %>%
-  kable(caption = "Mean Error by Risk Category") %>%
-  kbl() %>%
-  kable_classic()
-
-
-
-
+  group_by(raceContext, Risk_Category) %>%
+  summarize(mean.MAE = mean(countNarco.AbsError)) %>%
+  spread(Risk_Category, mean.MAE) %>%
+  kable(caption = "Mean Error by neighborhood racial context") %>%
+  kable_styling("striped", full_width = F)
 
 ```
-
-
+names(joined_data)
 # Two Paragraphs of Why or why not recommend the algorithm. 
 
 
