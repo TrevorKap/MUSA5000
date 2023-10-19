@@ -162,6 +162,10 @@ registeredMurals <-
 registeredMurals <- registeredMurals %>%
   dplyr::select(geometry, Legend)
 
+parks <- 
+  st_read("https://raw.githubusercontent.com/blackmad/neighborhoods/master/chicago.geojson") %>%
+  st_transform(st_crs(fishnet)) 
+
 ## Neighborhoods to use in LOOCV in a bit
 neighborhoods <- 
   st_read("https://raw.githubusercontent.com/blackmad/neighborhoods/master/chicago.geojson") %>%
