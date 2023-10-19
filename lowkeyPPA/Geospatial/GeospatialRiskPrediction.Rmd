@@ -455,6 +455,7 @@ reg.ss.spatialCV <-
 
 ```
 
+
 # A table of MAE and standard deviation MAE by regression.
 
 ```{r MAE and MAE Standard Deviation}
@@ -590,7 +591,11 @@ rbind(narc_KDE_sf, narc_risk_sf) %>%
 
 # A table of raw errors by race context for a random k-fold vs. spatial cross validation regression.
 
+```{r}
 
+joined_data <- st_join(reg.ss.spatialCV, tracts17, join = st_intersects)
+geom
+```
 > Map isnt needed but figure out the kable table
 
 ```{r}
