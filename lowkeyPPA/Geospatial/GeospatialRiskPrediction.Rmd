@@ -231,7 +231,10 @@ vars_net <- vars_net %>%
     mutate(Registered_Murals.nn = nn_function(st_c(st_coid(vars_net)), 
                                            st_c(registeredMurals),
                                            k = 3))
-
+vars_net <- vars_net %>%
+    mutate(abandoned_buildings.nn = nn_function(st_c(st_coid(vars_net)), 
+                                           st_c(registeredMurals),
+                                           k = 3))
 ```
 
 > What changes if we make `k` a different number?
