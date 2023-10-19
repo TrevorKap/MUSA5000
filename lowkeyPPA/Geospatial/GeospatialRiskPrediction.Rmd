@@ -188,9 +188,9 @@ abandoned_buildings <-
   st_transform(st_crs(fishnet)) %>%
   mutate(Legend = "Abandoned_Buildings")
 
-tracts18 <- 
+tracts17 <- 
   get_acs(geography = "tract", variables = c("B01001_001E","B01001A_001E"), 
-          year = 2018, state=17, county=031, geometry=T) %>%
+          year = 2017, state=17, county=031, geometry=T) %>%
   st_transform('ESRI:102271')  %>% 
   dplyr::select(variable, estimate, GEOID) %>%
   spread(variable, estimate) %>%
@@ -477,7 +477,7 @@ reg.ss.spatialCV_nogeom
 
 ```{r}
 
-st_join(tracts18, reg.ss.spatialCV) %>%
+st_join(tracts17, reg.ss.spatialCV) %>%
  # filter(!is.na(countNarco)) %>%
   group_by(raceContext) %>%
   summarize(mean.MAE = mean(countNarco.AbsError)) %>%
