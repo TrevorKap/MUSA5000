@@ -574,7 +574,6 @@ rbind(narc_KDE_sf, narc_risk_sf) %>%
       theme(axis.text.x = element_text(angle = 45, vjust = 0.5))
 ```
 
-
 # Two Paragraphs of Why or why not recommend the algorithm. 
 
 
