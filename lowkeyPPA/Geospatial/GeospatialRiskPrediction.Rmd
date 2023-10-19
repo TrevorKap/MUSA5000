@@ -171,6 +171,8 @@ parks <- parks %>%
   rename(Legend = park) %>%
   summarise()
 
+parks$Legend = "park"
+
 ## Neighborhoods to use in LOOCV in a bit
 
 neighborhoods <- 
@@ -202,10 +204,10 @@ tracts18 <-
 ```{r}
 
 vars_net <- 
-  rbind(registeredMurals, abandoned_buildings) %>%
-  st_intersects(fishnet, join=st_within) %>%
+  rbind(registeredMurals, parks, abandoned_buildings) %>%
+  st_join(fishnet, join=st_within) %>%
   st_drop_geometry() %>%
-  group_by(Legend) %>%
+  group_by(uniqueID, Legend) %>%
   summarize(count = n()) %>%
   left_join(fishnet, ., by = "uniqueID") %>%
   spread(Legend, count, fill=0) %>%
@@ -378,7 +380,7 @@ final_net <- final_net %>%
 final_net_nongeom <- final_net %>% st_drop_geometry()
 
 final_net_nongeom %>%
-  dplyr::select(countNarco, Registered_Murals) %>%
+  dplyr::select(countNarco, Registered_Murals, park, Abandoned_Buildings) %>%
   gather(Variable, Value, -countNarco) %>% 
   ggplot(aes(Value, countNarco)) +
      geom_point(size = .5) + geom_smooth(method = "lm", colour = "#FA7800") +
@@ -472,12 +474,25 @@ reg.ss.spatialCV_nogeom
 
 # A table of raw errors by race context for a random k-fold vs. spatial cross validation regression.
 
+
+> Map isnt needed but figure out the kable table
+
 ```{r}
 
   ggplot() + geom_sf(data = tracts18, aes(fill = raceContext)) +
     scale_fill_manual(values = c("purple", "yellow"), name="Race Context") +
     labs(title = "Race Context") +
     mapTheme() + theme(legend.position="bottom")
+
+st_join(tracts18, reg.ss.spatialCV) %>% 
+  filter(!is.na(countNarco)) %>%
+  group_by(raceContext, countNarco) %>%
+  summarize(mean.MAPE = scales::percent(mean(countNarco.AbsError, na.rm = T))) %>%
+  st_drop_geometry() %>%
+  spread(raceContext, mean(countNarco.AbsError)) %>%
+  kbl() %>%
+  kable_classic()
+
 
 ```
 
