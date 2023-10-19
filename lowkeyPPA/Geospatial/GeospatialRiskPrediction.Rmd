@@ -470,25 +470,7 @@ reg.ss.spatialCV_nogeom
 ```
 
 
-# A table of raw errors by race context for a random k-fold vs. spatial cross validation regression.
 
-
-> Map isnt needed but figure out the kable table
-
-```{r}
-
-st_join(tracts17, reg.ss.spatialCV) %>%
- # filter(!is.na(countNarco)) %>%
-  group_by(raceContext) %>%
-  summarize(mean.MAE = mean(countNarco.AbsError)) %>%
-  st_drop_geometry() %>%
-  spread(, mean.MAE) %>%
-  kable(caption = "Mean Error By Neighborhood") %>%
-    kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>%
-    row_spec(2, color = "black", background = "#FFFFFF") %>%
-    row_spec(4, color = "black", background = "#FFFFFF")
-
-```
 
 # The map comparing kernel density to risk predictions for the next year’s crime.
 
@@ -604,6 +586,26 @@ rbind(narc_KDE_sf, narc_risk_sf) %>%
            x = "Risk Category") +
   theme_bw() +
       theme(axis.text.x = element_text(angle = 45, vjust = 0.5))
+```
+
+# A table of raw errors by race context for a random k-fold vs. spatial cross validation regression.
+
+
+> Map isnt needed but figure out the kable table
+
+```{r}
+
+st_join(tracts17, reg.ss.spatialCV) %>%
+ # filter(!is.na(countNarco)) %>%
+  group_by(raceContext) %>%
+  summarize(mean.MAE = mean(countNarco.AbsError)) %>%
+  st_drop_geometry() %>%
+  spread(, mean.MAE) %>%
+  kable(caption = "Mean Error By Neighborhood") %>%
+    kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>%
+    row_spec(2, color = "black", background = "#FFFFFF") %>%
+    row_spec(4, color = "black", background = "#FFFFFF")
+
 ```
 
 
