@@ -596,20 +596,15 @@ rbind(narc_KDE_sf, narc_risk_sf) %>%
 joined_data <- st_join(reg.ss.spatialCV, tracts17, join = st_intersects)
 narc_risk_sf2 <- narc_risk_sf %>%
   dplyr::select("Risk_Category")
-  
-  
 
 joined_data <- st_join(joined_data, narc_risk_sf2, join = st_intersects) %>% 
-  dplyr::filter(countNarco.AbsError > 0.01)
-
-
+  dplyr::filter(countNarco.AbsError > 0.001) 
 
 
 ```
 
 
 ```{r}
-
 
 joined_data %>%
   st_centroid() %>%
@@ -618,11 +613,12 @@ joined_data %>%
   group_by(raceContext, Risk_Category) %>%
   summarize(mean.MAE = mean(countNarco.AbsError)) %>%
   spread(Risk_Category, mean.MAE) %>%
-  kable(caption = "Mean Error by neighborhood racial context") %>%
+  mutate(across(everything(), function(x) ifelse(is.numeric(x), round(x,2), x))) %>%
+  kable(caption = "Mean Error by Risk Cateogry in Racial context") %>%
   kable_styling("striped", full_width = F)
 
 ```
-names(joined_data)
+
 # Two Paragraphs of Why or why not recommend the algorithm. 
 
 
