@@ -594,16 +594,17 @@ rbind(narc_KDE_sf, narc_risk_sf) %>%
 ```{r}
 
 joined_data <- st_join(reg.ss.spatialCV, tracts17, join = st_intersects)
-
 narc_risk_sf2 <- narc_risk_sf %>%
   dplyr::select("Risk_Category")
+  
+  
 
-joined_data <- st_join(joined_data, narc_risk_sf2, join = st_intersects) %>%
+joined_data <- st_join(joined_data, narc_risk_sf2, join = st_intersects) %>% 
   dplyr::filter(countNarco.AbsError > 0.01)
 
-
 ```
-> Map isnt needed but figure out the kable table
+
+
 
 ```{r}
 
