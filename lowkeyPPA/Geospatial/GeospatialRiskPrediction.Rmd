@@ -166,6 +166,9 @@ registeredMurals <- registeredMurals %>%
 parks <- 
   st_read("https://github.com/TrevorKap/MUSA5000/raw/main/lowkeyPPA/Geospatial/Parks%20-%20Chicago%20Park%20District%20Facilities%20(current).geojson") %>%
   st_transform(st_crs(fishnet)) 
+parks <- parks %>%
+  group_by(park) %>%
+  summarise()
 
 ## Neighborhoods to use in LOOCV in a bit
 
@@ -181,6 +184,17 @@ abandoned_buildings <-
   st_as_sf(coords = c("X", "Y"), crs = 4326, agr = "constant") %>%
   st_transform(st_crs(fishnet)) %>%
   mutate(Legend = "Abandoned_Buildings")
+
+tracts18 <- 
+  get_acs(geography = "tract", variables = c("B01001_001E","B01001A_001E"), 
+          year = 2018, state=17, county=031, geometry=T) %>%
+  st_transform('ESRI:102271')  %>% 
+  dplyr::select(variable, estimate, GEOID) %>%
+  spread(variable, estimate) %>%
+  rename(TotalPop = B01001_001,
+         NumberWhites = B01001A_001) %>%
+  mutate(percentWhite = NumberWhites / TotalPop,
+         raceContext = ifelse(percentWhite > .5, "Majority_White", "Majority_Non_White")) 
 ```
 
 
@@ -574,6 +588,14 @@ rbind(narc_KDE_sf, narc_risk_sf) %>%
       theme(axis.text.x = element_text(angle = 45, vjust = 0.5))
 ```
 
+```{r}
+
+  ggplot() + geom_sf(data = tracts18, aes(fill = raceContext)) +
+    scale_fill_manual(values = c("purple", "yellow"), name="Race Context") +
+    labs(title = "Race Context") +
+    mapTheme() + theme(legend.position="bottom")
+
+```
 # Two Paragraphs of Why or why not recommend the algorithm. 
 
 
