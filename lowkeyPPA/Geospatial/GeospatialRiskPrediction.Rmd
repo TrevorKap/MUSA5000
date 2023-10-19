@@ -415,8 +415,6 @@ Leave One Group Out CV on spatial features
 
 ```{r Crossvalidate, message=FALSE, warning=TRUE, include=FALSE, results='hide'}
 
-
-
 ## define the variables we want
 reg.ss.vars <- c("Registered_Murals.nn", "Mural.isSig.dist")
 
@@ -430,7 +428,7 @@ reg.ss.spatialCV <- crossValidate(
 
 ```
 
-```{r map of errors by random k fold and spatial cross validtion}
+```{r map of errors by random k fold and spatial cross validation}
 
 reg.ss.spatialCV <-
   reg.ss.spatialCV %>%
@@ -479,32 +477,17 @@ reg.ss.spatialCV_nogeom
 
 ```{r}
 
-  ggplot() + geom_sf(data = tracts18, aes(fill = raceContext)) +
-    scale_fill_manual(values = c("purple", "yellow"), name="Race Context") +
-    labs(title = "Race Context") +
-    mapTheme() + theme(legend.position="bottom")
-
-
-reg.ss.spatialCV_18 <- 
-  st_join(tracts18, reg.ss.spatialCV) %>% 
+st_join(tracts18, reg.ss.spatialCV) %>%
+ # filter(!is.na(countNarco)) %>%
+  group_by(raceContext) %>%
+  summarize(mean.MAE = mean(countNarco.AbsError)) %>%
   st_drop_geometry() %>%
-  summarise(MAE = mean(countNarco.AbsError),
-            MAESTD = sd(countNarco.AbsError)) %>%
-  kbl(col.name=c('Mean Absolute Error','Mean Absolute Error Standard Deviation')) %>%
-  kable_classic()
+  spread(, mean.MAE) %>%
+  kable(caption = "Mean Error By Neighborhood") %>%
+    kable_styling(bootstrap_options = c("striped", "hover", "condensed")) %>%
+    row_spec(2, color = "black", background = "#FFFFFF") %>%
+    row_spec(4, color = "black", background = "#FFFFFF")
 
-reg.ss.spatialCV_18
-
-
-#REFERENCE!
-st_join(Philly.test, acsTractsPHL.2021) %>% 
-  filter(!is.na(incomeContext)) %>%
-  group_by(raceContext, incomeContext) %>%
-  summarize(mean.MAPE = scales::percent(mean(sale_price.APE, na.rm = T))) %>%
-  st_drop_geometry() %>%
-  spread(incomeContext, mean.MAPE) %>%
-  kbl() %>%
-  kable_classic()
 ```
 
 # The map comparing kernel density to risk predictions for the next year’s crime.
