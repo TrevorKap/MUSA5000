@@ -85,7 +85,6 @@ ggplot() +
   labs(title= "Narcotic Arrests, Chicago 2017") +
   mapTheme(title_size = 14))
 
-
 ```
 
 
@@ -130,7 +129,6 @@ ggplot() +
   scale_fill_viridis() +
   labs(title = "Count of Nacro Arrests for the fishnet") +
   mapTheme()
-
 
 ```
 
