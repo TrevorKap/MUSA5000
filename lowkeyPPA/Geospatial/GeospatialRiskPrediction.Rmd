@@ -484,16 +484,27 @@ reg.ss.spatialCV_nogeom
     labs(title = "Race Context") +
     mapTheme() + theme(legend.position="bottom")
 
-st_join(tracts18, reg.ss.spatialCV) %>% 
-  filter(!is.na(countNarco)) %>%
-  group_by(raceContext, countNarco) %>%
-  summarize(mean.MAPE = scales::percent(mean(countNarco.AbsError, na.rm = T))) %>%
+
+reg.ss.spatialCV_18 <- 
+  st_join(tracts18, reg.ss.spatialCV) %>% 
   st_drop_geometry() %>%
-  spread(raceContext, mean(countNarco.AbsError)) %>%
-  kbl() %>%
+  summarise(MAE = mean(countNarco.AbsError),
+            MAESTD = sd(countNarco.AbsError)) %>%
+  kbl(col.name=c('Mean Absolute Error','Mean Absolute Error Standard Deviation')) %>%
   kable_classic()
 
+reg.ss.spatialCV_18
 
+
+#REFERENCE!
+st_join(Philly.test, acsTractsPHL.2021) %>% 
+  filter(!is.na(incomeContext)) %>%
+  group_by(raceContext, incomeContext) %>%
+  summarize(mean.MAPE = scales::percent(mean(sale_price.APE, na.rm = T))) %>%
+  st_drop_geometry() %>%
+  spread(incomeContext, mean.MAPE) %>%
+  kbl() %>%
+  kable_classic()
 ```
 
 # The map comparing kernel density to risk predictions for the next year’s crime.
