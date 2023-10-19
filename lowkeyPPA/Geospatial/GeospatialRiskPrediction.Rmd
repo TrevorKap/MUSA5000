@@ -594,7 +594,14 @@ rbind(narc_KDE_sf, narc_risk_sf) %>%
 ```{r}
 
 joined_data <- st_join(reg.ss.spatialCV, tracts17, join = st_intersects)
-geom
+
+narc_risk_sf2 <- narc_risk_sf %>%
+  dplyr::select("Risk_Category")
+
+joined_data <- st_join(joined_data, narc_risk_sf2, join = st_intersects) %>%
+  dplyr::filter(countNarco.AbsError > 0.01)
+
+
 ```
 > Map isnt needed but figure out the kable table
 
@@ -614,6 +621,21 @@ st_join(tracts17, reg.ss.spatialCV) %>%
 ```
 
 
+```{r}
+
+
+joined_data %>%
+  st_centroid() %>%
+  na.omit() %>%
+  st_drop_geometry() %>%
+  group_by(raceContext, Risk_Category) %>%
+  summarize(mean.MAE = mean(countNarco.AbsError)) %>%
+  spread(Risk_Category, mean.MAE) %>%
+  kable(caption = "Mean Error by neighborhood racial context") %>%
+  kable_styling("striped", full_width = F)
+
+```
+names(joined_data)
 # Two Paragraphs of Why or why not recommend the algorithm. 
 
 
