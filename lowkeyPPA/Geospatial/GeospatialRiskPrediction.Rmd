@@ -62,7 +62,7 @@ chicagoBoundary <-
 ```
 # Introduction 
 
-We are interested in seeing Narcotic Arrests across Chicago in 2017. Narcotic arrests does not necessarily translate to drug-related crimes or occurrences such as possession or distribution, as narcotics are under reported and suffer additional selection bias in terms of racial and geographic profiling. Because the term "narcotics" has such a broad definition ranging from heroin to cannabis, we are going to look at cannabis possession exclusively. Our model will make predictions on future cannabis arrests based on previous arrests and a single indicator that represents sense of community, social issue awareness, and urban beautification, that being murals &     . 
+We are interested in seeing Narcotic Arrests across Chicago in 2017. Narcotic arrests does not necessarily translate to drug-related crimes or occurrences such as possession or distribution, as narcotics are under reported and suffer additional selection bias in terms of racial and geographic profiling. Because the term "narcotics" has such a broad definition ranging from heroin to cannabis, we are going to look at cannabis possession exclusively. Our model will make predictions on future cannabis arrests based on previous arrests and independent variables. The variables in questions are murals, parks, and abandon buildings.
 
 
 # Outcome of Interest Points 
@@ -162,11 +162,13 @@ registeredMurals <-
 registeredMurals <- registeredMurals %>%
   dplyr::select(geometry, Legend)
 
+
 parks <- 
   st_read("https://raw.githubusercontent.com/blackmad/neighborhoods/master/chicago.geojson") %>%
   st_transform(st_crs(fishnet)) 
 
 ## Neighborhoods to use in LOOCV in a bit
+
 neighborhoods <- 
   st_read("https://raw.githubusercontent.com/blackmad/neighborhoods/master/chicago.geojson") %>%
   st_transform(st_crs(fishnet)) 
@@ -193,7 +195,6 @@ vars_net <- registeredMurals %>%
   spread(Legend, count, fill=0) %>%
   dplyr::select(-`<NA>`) %>%
   ungroup()
-
 
 ```
 
