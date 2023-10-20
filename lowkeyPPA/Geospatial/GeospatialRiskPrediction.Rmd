@@ -93,11 +93,6 @@ ggplot() +
 
 # Fishnet Grid of Narcotic Arrests
 
-> What is a fishnet grid?
-
-The `{sf}` package offers really easy way to create fishnet grids using the `st_make_grid()` function. The `cellsize` argument allows you to set the size of the grid cells; in this case it is set to `500` meters. You may have to do some research on the spatial layers projection (using `st_crs()` to know what coordinate system you are in) to understand if you are in feet or meters. If you are using Longitude and Latitude, you will need to project the data to a projected coordinate system to get distance measurements.
-
-Examine the fishnet - the unique ID is crucial to building a data set!
 
 ```{r}
 ## using {sf} to create the grid
@@ -114,7 +109,8 @@ fishnet <-
 
 ### Aggregate points to the fishnet
 
-> How can we aggregate points into a fishnet grid?
+Cannabis arrests are displayed through a fishnet grid, which breaks the Chicago boundary into square plots that accounts for geographies and the density of values. The fishnet displays a concentration of arrests for cannabis possession because of the dedicated resources in a specific area. While the previous map showed cannabis arrests occurring all over the city, the areas had a low frequency of cannabis arrests and could not be described the same way as shown here. Here, the map displays the frequency of cannabis arrests. 
+  
 
 ```{r}
 ## add a value of 1 to each crime, sum them with aggregate
@@ -138,11 +134,8 @@ ggplot() +
 
 # A small multiple map of your risk factors in the fishnet (counts, distance and/or other feature engineering approaches).
 
-> What features would be helpful in predicting the location of narcotics? care in the community, what indicator can show care and upbringing in community? murals? prove that murals can reate a sense of community, beautify urban spaces, express historical and cultural identity, raise awareness about social issues, and inspire creativity and wonder. Murals may decrease narcotic arrests and broken window policing. 
->
-> What might these features be problematic?
->
-> hint: for all the reasons we learned in class
+Our model will make predictions on future cannabis arrests based on previous arrests and independent variables. The variables in questions are murals, sanitation, non-working street lights, fast food place density, and abandoned buildings. Murals are a sign of vibrancy, sense of community, and urban aesthetic. The hypothesis here is that murals will reduce police enforcement of cannabis possession because of the peaceful atmosphere that exists. On the contrary, abandoned buildings can signal for "broken window policing" and would make misdemeanors such as drug possession enforced to harsher extents. Sanitation is a great indicator because dirtiness reflects the character of a community by any who observe it. Street lights indicate the maintenance and funding provided in a neighborhood and a lack of light in an area is susceptible for larger amounts of crime. Lastly, fast food is often more concentrated around lower income neighborhoods and can attract people who have recently used cannabis. 
+
 
 ```{r}
 ## only pulling a single variable for our model to keep it simple
