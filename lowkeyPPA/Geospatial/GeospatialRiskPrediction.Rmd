@@ -138,8 +138,7 @@ Our model will make predictions on future cannabis arrests based on previous arr
 
 
 ```{r}
-## only pulling a single variable for our model to keep it simple
-## using Socrata again
+
 registeredMurals <- 
   read.socrata("https://data.cityofchicago.org/Historic-Preservation/Mural-Registry/we8h-apcf") %>%
     dplyr::select(Y = latitude, X = longitude) %>%
@@ -169,7 +168,7 @@ parks <- parks %>%
 
 parks$Legend = "park"
 
-## Neighborhoods to use in LOOCV in a bit
+
 
 neighborhoods <- 
   st_read("https://raw.githubusercontent.com/blackmad/neighborhoods/master/chicago.geojson") %>%
@@ -241,7 +240,10 @@ vars_net <-
 st_c    <- st_coordinates
 st_coid <- st_centroid
 
-
+vars_net <- vars_net %>%
+    mutate(Registered_Murals.nn = nn_function(st_c(st_coid(vars_net)), 
+                                           st_c(registeredMurals),
+                                           k = 8))
 
 vars_net <- vars_net %>%
     mutate(abandoned_buildings.nn = nn_function(st_c(st_coid(vars_net)), 
