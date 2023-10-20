@@ -188,6 +188,25 @@ abandoned_buildings <-
   st_transform(st_crs(fishnet)) %>%
   mutate(Legend = "Abandoned_Buildings")
 
+
+streetLightsOut <- 
+  read.socrata("https://data.cityofchicago.org/Service-Requests/311-Service-Requests-Street-Lights-All-Out/zuxi-7xem") %>%
+    mutate(year = substr(creation_date,1,4)) %>% filter(year == "2017") %>%
+    dplyr::select(Y = latitude, X = longitude) %>%
+    na.omit() %>%
+    st_as_sf(coords = c("X", "Y"), crs = 4326, agr = "constant") %>%
+    st_transform(st_crs(fishnet)) %>%
+    mutate(Legend = "Street_Lights_Out")
+
+sanitation <-
+  read.socrata("https://data.cityofchicago.org/Service-Requests/311-Service-Requests-Sanitation-Code-Complaints-Hi/me59-5fac") %>%
+    mutate(year = substr(creation_date,1,4)) %>% filter(year == "2017") %>%
+    dplyr::select(Y = latitude, X = longitude) %>%
+    na.omit() %>%
+    st_as_sf(coords = c("X", "Y"), crs = 4326, agr = "constant") %>%
+    st_transform(st_crs(fishnet)) %>%
+    mutate(Legend = "Sanitation")
+
 tracts17 <- 
   get_acs(geography = "tract", variables = c("B01001_001E","B01001A_001E"), 
           year = 2017, state=17, county=031, geometry=T) %>%
