@@ -223,7 +223,7 @@ tracts17 <-
 ```{r}
 
 vars_net <- 
-  rbind(registeredMurals, parks, abandoned_buildings) %>%
+  rbind(registeredMurals, parks, abandoned_buildings, streetLightsOut, sanitation) %>%
   st_join(fishnet, join=st_within) %>%
   st_drop_geometry() %>%
   group_by(uniqueID, Legend) %>%
