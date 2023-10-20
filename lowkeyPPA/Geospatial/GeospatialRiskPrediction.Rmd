@@ -298,7 +298,7 @@ final_net <-
 ggplot() +
       geom_sf(data = vars_net.long.nn, aes(fill=value), colour=NA) +
       scale_fill_viridis(name="NN Distance") +
-      labs(title="Near Neighbor of Abandon Buildings") +
+      labs(title="Nearest Neighbor of Abandon Buildings") +
       mapTheme()
 
 
@@ -308,6 +308,17 @@ ggplot() +
   labs(title = "Count of Murals in Fishnet") +
   mapTheme()
 
+ggplot() +
+  geom_sf(data = vars_net, aes(fill=Sanitation), colour=NA) +
+  scale_fill_viridis() +
+  labs(title = "Sanitation Count") +
+  mapTheme()
+
+ggplot() +
+  geom_sf(data = vars_net, aes(fill=Street_Lights_Out), colour=NA) +
+  scale_fill_viridis() +
+  labs(title = "Count of Outted Street Lights") +
+  mapTheme()
 
 ggplot() +
       geom_sf(data = final_net, aes(fill=countNarco), colour=NA) +
