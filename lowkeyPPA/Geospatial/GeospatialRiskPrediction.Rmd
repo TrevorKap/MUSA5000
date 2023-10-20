@@ -245,15 +245,14 @@ vars_net <-
 st_c    <- st_coordinates
 st_coid <- st_centroid
 
-## create NN from abandoned cars
-vars_net <- vars_net %>%
-    mutate(Registered_Murals.nn = nn_function(st_c(st_coid(vars_net)), 
-                                           st_c(registeredMurals),
-                                           k = 3))
+
+
 vars_net <- vars_net %>%
     mutate(abandoned_buildings.nn = nn_function(st_c(st_coid(vars_net)), 
-                                           st_c(registeredMurals),
-                                           k = 3))
+                                           st_c(abandoned_buildings),
+                                           k = 8))
+
+
 ```
 
 > What changes if we make `k` a different number?
@@ -299,7 +298,7 @@ final_net <-
 ggplot() +
       geom_sf(data = vars_net.long.nn, aes(fill=value), colour=NA) +
       scale_fill_viridis(name="NN Distance") +
-      labs(title="Murals NN Distance") +
+      labs(title="Near Neighbor of Abandon Buildings") +
       mapTheme()
 
 
