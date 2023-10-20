@@ -62,19 +62,22 @@ chicagoBoundary <-
 ```
 # Introduction 
 
-We are interested in seeing Narcotic Arrests across Chicago in 2017. Narcotic arrests does not necessarily translate to drug-related crimes or occurrences such as possession or distribution, as narcotics are under reported and suffer additional selection bias in terms of racial and geographic profiling. Because the term "narcotics" has such a broad definition ranging from heroin to cannabis, we are going to look at cannabis possession exclusively. Our model will make predictions on future cannabis arrests based on previous arrests and independent variables. The variables in questions are murals, parks, and abandon buildings.
+According to the FBI Crime Report data, 40% of drug related arrests were cannabis related. Of these arrests, a whopping 92% was related to cannabis possession. And whereas the number of total cannabis related arrests dropped by 23% from 2020 to 2021, we would remain rather cautious whether this drop is a real trend rather than an effect of legalization of recreational cannabis use in states like New Mexico and Conneticut in 2021. What's more, one might ask why, with the wave of legalization throughout the past years, the number of cannabis crimes has not dropped much more significantly throughout the whole country in the past years. There are several explanation attempts to answer this question, mostly revolving around valid accessibility issues (medical cards) and high taxes on recreational cannabis, prompting large proportions of regular consumers to turn toward the black market.
+
+Even though we yet don't have the answer to many of these questions, what we know with certainty is that cannabis use and crime remains an integral part of American sociocultural life across distinct age groups, and as corroborated above, an everyday challenge for police forces all over the country. With the insurgence of new geospatial risk prediction models in counter crime activities, and the potential selection bias inherent in police cannabis arrest data, we decided to dedicate this brief to create a geospatial risk prediction model for the city of Chicago based on cannabis arrest data in 2017.
+
+In 2020, 77% of all cannabis related arrests targeted the black population- three times more than all other ethnicities combined. White cannabis arrests amount to a mere 4%. This stark contrast raises many questions, including whether more frequent and strict enforcement in areas with high black population and loose treatment of white cannabis crime have imbued selection bias in our data. If this were the case, geospatial risk models would most certainly inherit this bias- with potentially tragic repercussions that lead to a self-fulfilling prophecy of even higher black cannabis arrests.
+
+We will start with a short visual introduction, and then move on to introduce our independent variables. We will then regress cannabis crime arrests on our independent variables and add the spatial process. Our goal is to identify if our final geospatial risk model is biased, and whether this is due to the selection bias in our data collection / police enforcement behavior.
 
 
 # Outcome of Interest Points 
   
+This figure shows the locations of 2017 Chicago cannabis crime arrests. We can see clear spatial clustering in the mid northwest of the city and a weak form of spatial clustering in the southwest of the city. In total, there were arrests.
 
+We prefer to use fishnet grid data for these kind of visualizations as it allows for a more fine grained division of space. We will later use this to calculate local instead of global Moran's I, a measure that will make our predictions more accurate on the micro level.
 
-with some description of what, when, and why you think selection bias may be an issue.
-Plotting point data and density
-
-> How do we analyze point data?
-
-> Are there other geometries useful to represent point locations?
+It is very likely that these areas are also areas with increased policing activity and monitoring, hence creating a vicious cycle of relative overreporting of cannabis criminality in these two areas. Any predictive model that includes spatial process will inherit selection bias in that it will overreport the risk of cannabis crime in areas where there is already a high number of reported cannabis arrests. This is because these clustered data points spatially cluster and therefore strongly drag our model more into these areas than, say, others in the northeast. When cross-checking, we find that the two mentioned clusters have a combined of approximately 1000 arrests- making up more than 50% of all arrests. This is a big risk factor that we should keep in mind when setting up our regression model.
 
 ```{r fig.width=6, fig.height=4}
 # uses grid.arrange to organize independent plots
@@ -330,15 +333,7 @@ ggplot() +
 
 # Local Moran's I
 
-using {spdep} package to to build neighborhood weights and list to calculate local Moran's I.
-
-Note that the code here is *different* than in the book - it has been updated to keep up with changes in packages.
-
-> What is the difference between local and global Moran's I?
-
-A little in depth version of the chunk below can be found:
-
-Mendez C. (2020). Spatial autocorrelation analysis in R. R Studio/RPubs. Available at <https://rpubs.com/quarcs-lab/spatial-autocorrelation>
+Local Moran's I is very similar to Global Moran's I in that it also measures spatial autocorrelation, but does so for each geometry, in our case ,fishnet grid, of the surface. The advantage of this is that we have much more fine-grained data and can identify density kernels or hotpots of predicted cannabis crime. Whereas a Global Moran's I can also be helpful to understand the spatial process of our dependent variable, it is rather a macro level distribution insight and therefore tells more about clustering of cannabis crime on a city-level than the local spatial process. The local spatial process is so essential in the use case of geospatial risk modelling since it increases our accuracy and lets us identify hotspots more easily.
 
 ```{r}
 ## generates warnings from PROJ issues
