@@ -75,7 +75,7 @@ palette2 <- c("#981FAC","#FF006A")
 
 
 housingsubsidy <- read.csv("https://github.com/urbanSpatial/Public-Policy-Analytics-Landing/raw/master/DATA/Chapter6/housingSubsidy.csv")
-churnBounce <- read.csv("https://github.com/urbanSpatial/Public-Policy-Analytics-Landing/raw/master/DATA/Chapter6/churnBounce.csv")
+
 
 ```
 
