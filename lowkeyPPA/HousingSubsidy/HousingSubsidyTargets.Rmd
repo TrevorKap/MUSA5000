@@ -107,10 +107,10 @@ Make some plots of our variables - both continuous and categorical. Examine thes
 
 ```{r exploratory_continuous_density, message = FALSE, warning = FALSE}
 housingsubsidy %>%
-    dplyr::select(click,Area_Income, Time_On_FB, Daily_Internet_Usage, Age) %>%
-    gather(Variable, value, -click) %>%
+    dplyr::select(y,unemploy_rate, mortgage, taxbill_in_phl, cons.price.idx, inflation_rate, cons.conf.idx) %>%
+    gather(Variable, value, -y) %>%
     ggplot() + 
-    geom_density(aes(value, color=click), fill = "transparent") + 
+    geom_density(aes(value, color=y), fill = "transparent") + 
     facet_wrap(~Variable, scales = "free") +
     scale_fill_manual(values = palette2) +
     labs(title = "Feature distributions click vs. no click",
