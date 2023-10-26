@@ -122,6 +122,24 @@ housingsubsidy %>%
         theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ```
 
+```{r Training and Test Set}
+inTrain <- createDataPartition(
+              y = paste(HDFinal$DIST_NAME), 
+              p = .60, list = FALSE)
+Philly.training <- HDFinal[inTrain,] 
+Philly.test <- HDFinal[-inTrain,]  
+ 
+reg.training <- 
+  lm(sale_price ~ ., data = as.data.frame(Philly.training) %>% 
+                        dplyr::select(sale_price, shooting_halfmile, interior_condition, total_livable_area, 
+                        DIST_NAME, mean_profadv, tree_count, medHHInc, 
+                        exterior_condition, fireplaces, WhiteHOrate, AssistedIncRate,
+                        rest_per_sqmi, number_of_bathrooms))
+
+stargazer(reg.training,type='text', title='Sales Price Model Results', keep.stat = c('n','rsq'))
+```
+
+
 # Variable Transformations
 
 We have tons of countries in our data set. Most have only a handful of observations. I create a "click average" for each country to use a continuous instead of categorical variable.
