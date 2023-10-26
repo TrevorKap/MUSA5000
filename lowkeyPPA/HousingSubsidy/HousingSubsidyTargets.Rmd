@@ -109,7 +109,7 @@ housingsubsidy %>%
 
 ```{r exploratory_binary, message = FALSE, warning = FALSE}
 housingsubsidy %>%
-    dplyr::select(y, month, poutcome) %>%
+    dplyr::select(y, month, poutcome, education) %>%
     gather(Variable, value, -y) %>%
     count(Variable, value, y) %>%
       ggplot(., aes(value, n, fill = y)) +   
