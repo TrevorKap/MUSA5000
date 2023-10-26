@@ -1,0 +1,44 @@
+---
+title: "RBarad_Play"
+author: "Richard Barad"
+date: "2023-10-26"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+
+```
+
+# Read Housing Subsidy Data
+
+```{r cars}
+housing_subsidy <- read_csv('https://github.com/urbanSpatial/Public-Policy-Analytics-Landing/raw/master/DATA/Chapter6/housingSubsidy.csv')
+```
+
+## Data Exploration
+
+# Continuous Variables
+
+```{r exploratory_continuous}
+housing_subsidy %>%
+  dplyr::select(age,previous, unemploy_rate, cons.price.idx, cons.conf.idx, inflation_rate, spent_on_repairs, y) %>%
+  gather(variable, value, -y) %>%
+  group_by(y, variable) %>% summarise(mean=mean(value)) %>%
+ggplot(aes(x=y,y=mean,fill=y))+
+  geom_bar(stat='identity')+
+  facet_wrap(~variable,scales = "free")+
+  labs(x="Enter Housing Subsity Program", y="Value", 
+      title = "Feature associations with likelihood of entering housing subsidy program",
+      subtitle = "Continous outcomes")
+```
+
+
+# Non Continuous Variables
+```{r exploratory_non_continuous}
+
+housing_subsity %>%
+  dplyr::select()
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
