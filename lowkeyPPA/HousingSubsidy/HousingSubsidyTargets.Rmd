@@ -81,16 +81,6 @@ housingsubsidy <- read.csv("https://github.com/urbanSpatial/Public-Policy-Analyt
 
 # Data Exploration
 
-Use the `glimpse` command to check out your data set.
-
-Make some plots of our variables - both continuous and categorical. Examine these plots and then jot down your observations to discussion prompt 1.
-
-## Discussion 1:
-
-**What are some of the average characteristics of people who click on this ad?**
-
-**What are some of the ways in which clickers and non-clickers are different?**
-
 ```{r exploratory_continuous}
   housingsubsidy %>%
     dplyr::select(y,unemploy_rate, mortgage, taxbill_in_phl, cons.price.idx, inflation_rate, cons.conf.idx) %>%
@@ -118,11 +108,11 @@ housingsubsidy %>%
 ```
 
 ```{r exploratory_binary, message = FALSE, warning = FALSE}
-advertising %>%
-    dplyr::select(click, Male, Fashion_FB_Group) %>%
-    gather(Variable, value, -click) %>%
-    count(Variable, value, click) %>%
-      ggplot(., aes(value, n, fill = click)) +   
+housingsubsidy %>%
+    dplyr::select(y, month, poutcome) %>%
+    gather(Variable, value, -y) %>%
+    count(Variable, value, y) %>%
+      ggplot(., aes(value, n, fill = y)) +   
         geom_bar(position = "dodge", stat="identity") +
         facet_wrap(~Variable, scales="free") +
         scale_fill_manual(values = palette2) +
