@@ -106,26 +106,74 @@ ggplot(aes(x=y,y=mean,fill=y))+
       
 ```
 
-```{r Training and Test Set}
-inTrain <- createDataPartition(
-              y = paste(housingsubsidy), 
-              p = .65, list = FALSE)
-HS.training <- housingsubsidy[inTrain,] 
-HS.test <- housingsubsidy[-inTrain,]  
- 
-reg.training <- 
-  lm(y_numeric ~ ., data = as.data.frame(HS.training) %>% 
-                        dplyr::select(age, previous, unemploy_rate, cons.price.idx, cons.conf.idx, inflation_rate, spent_on_repairs, y_numeric))
-
-stargazer(reg.training,type='text', title='Housing Subsidy Join Results', keep.stat = c('n','rsq'))
-```
-
 # Non Continuous Variables
 ```{r exploratory_non_continuous}
 
-housing_subsity %>%
+housingsubsidy %>%
   dplyr::select()
 
 ```
 
 
+
+# Making Models
+
+```{r Training and Test Set}
+set.seed(3456)
+trainIndex <- createDataPartition(housingsubsidy$y_numeric, p = .65,
+                                  list = FALSE,
+                                  times = 1)
+HSTrain <- housingsubsidy[trainIndex,]
+HSTest  <- housingsubsidy[-trainIndex,]
+
+#Running the Model
+
+HSModel <- glm(y_numeric ~ .,
+                  data=HSTrain %>% 
+                    dplyr::select(age,previous, unemploy_rate, cons.price.idx, cons.conf.idx, inflation_rate, spent_on_repairs, y_numeric),
+                  family="binomial" (link="logit"))
+
+summary(HSModel)
+
+
+```
+
+## Model 2
+
+```{r second_model}
+HSModel2 <- glm(y_numeric ~ .,
+                  data=HSTrain %>% dplyr::select(age,previous, unemploy_rate, cons.price.idx, cons.conf.idx, inflation_rate, pdays,  spent_on_repairs, y_numeric),
+                  family="binomial" (link="logit"))
+
+summary(HSModel2)
+
+```
+
+
+```{r fit_metrics}
+
+pR2(HSModel2)
+
+```
+
+
+```{r testProbs}
+
+testProbs <- data.frame(Outcome = as.factor(HSTest$y_numeric),
+                        Probs = predict(HSModel2, HSTest, type= "response"))
+```
+
+## Discussion 3
+
+Look at the plot of our predicted probabilities for our observed clickers (`1`) and non-clickers (`0`). **Write a sentence or two about how you think our model is performing.**
+
+```{r plot_testProbs}
+ggplot(testProbs, aes(x = Probs, fill = as.factor(Outcome))) + 
+  geom_density() +
+  facet_grid(Outcome ~ .) +
+  scale_fill_manual(values = palette2) +
+  labs(x = "Joins", y = "Density of probabilities",
+       title = "Distribution of predicted probabilities by observed outcome") +
+  theme(strip.text.x = element_text(size = 18),
+        legend.position = "none")
+```
