@@ -29,7 +29,12 @@ library(knitr)
 library(pscl)
 library(plotROC)
 library(pROC)
+library(jtools)
 library(lubridate)
+library(stargazer)
+
+
+
 ```
 
 ```{r load_data, cache = TRUE}
@@ -109,8 +114,8 @@ HS.training <- housingsubsidy[inTrain,]
 HS.test <- housingsubsidy[-inTrain,]  
  
 reg.training <- 
-  lm(y ~ ., data = as.data.frame(HS.training) %>% 
-                        dplyr::select(age, previous, unemploy_rate, cons.price.idx, cons.conf.idx, inflation_rate, spent_on_repairs, y))
+  lm(y_numeric ~ ., data = as.data.frame(HS.training) %>% 
+                        dplyr::select(age, previous, unemploy_rate, cons.price.idx, cons.conf.idx, inflation_rate, spent_on_repairs, y_numeric))
 
 stargazer(reg.training,type='text', title='Housing Subsidy Join Results', keep.stat = c('n','rsq'))
 ```
